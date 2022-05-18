@@ -339,7 +339,10 @@ Pridicate 인터페이스
 public interface Predicate<T> {
     public boolean test(T t);
 }
+```
 
+Predicate인터페이스를 implements 해서 사용하는 경우를 간단하게 살펴보겠습니다.
+test메소드를 구현이 강요됩니다. 
 
 ```java
 public class PredicateDemo implements Predicate<Integer> {
@@ -350,7 +353,7 @@ public class PredicateDemo implements Predicate<Integer> {
     }
 }
 ```
-
+Predicate인터페이스 구현체를 사용합니다.
 ```java
 public class PredicateDemoMain {
     public static void main(String[] args) {
@@ -360,13 +363,12 @@ public class PredicateDemoMain {
     }
 }
 ```
-
+20이 18 보다 크기 때문에 true값을 얻을 수 있습니다. 
 ```
 true
 ```
 
 java.util.function package에 있는 Predicate인터페이스를 살펴보겠습니다.
-
 ```java
 package java.util.function;
 
@@ -404,18 +406,132 @@ public interface Predicate<T> {
 }
 ```
 
-test 추상 메소드와 default 메소드 and, negate, or static메소드 isEqual, not이 포함되어있습니다.
+test 추상 메소드와 default 메소드 and, negate, or, static메소드 isEqual, not이 포함되어있습니다.
 
+```java
+public class PredicateDemoMainJava8 {
+    public static void main(String[] args) {
+//Predicate<Integer> predicate = (Integer age) -> {return age > 18;};
+        Predicate<Integer> predicate = age -> age > 18;
+        System.out.println(predicate.test(18));
 
+        ArrayList<String> names = new ArrayList<>();
 
+        //Predicate<ArrayList> predicate1 = (ArrayList list) -> {return list.isEmpty();};
+        Predicate<ArrayList> predicate1 = list -> list.isEmpty();
+        System.out.println(predicate1.test(names));
 
+        names.add("John");
+        System.out.println(predicate1.test(names));
+    }
+}
+```
 
+Java8의 Predicate 인터페이스를 활용한 람다식을 통해서 간단하게 위에서 작성된 코드를 대체할 수 있습니다.
 
+```java
+        Predicate<Integer> predicate = age -> age > 18;
+        System.out.println(predicate.test(18));
 
+        ArrayList<String> names = new ArrayList<>();
+```
 
+그리고 콜렉션의 경우에는 다음과 같이 적용할 수 있습니다.
 
+```java
+        Predicate<ArrayList> predicate1 = list -> list.isEmpty();
+        System.out.println(predicate1.test(names));
+```
 
+홀수를 구분하는 코드를 샘플로 작성하겠습니다.
 
+```java
+public class PredicateExample {
 
+    public static void main(String[] args) {
+        Predicate<Integer> isOdd = num -> num % 2 != 0;
+        System.out.println(isOdd.test(4));
 
+        Integer[] numbers = {2, 6, 9, 4, 8, 22, 19};
+        Predicate<Integer> oddEvenPredicated = num -> num % 2 != 0;
+
+        for (Integer num : numbers) {
+            if (oddEvenPredicated.test(num)) {
+                System.out.println("Odd num " + num);
+            }
+        }
+    }
+}
+```
+
+짝수는 Prediate의 default method negate를 사용해서 쉽게 구현할 수 있습니다.
+
+```java
+    if (oddEvenPredicated.negate().test(num)) {
+        System.out.println("Even num " + num);
+    }
+```
+
+만약 10보다 큰 홀수를 찾는다고 하면 어떠헥 할 수 있을까?
+다음 코드를 추가하면 된다. Predicate 인터페이스의 and() 메소드가 사용됩니다.
+Predicate 인터페이스의 or() 메소드를 사용해서 쉽게 홀수거나 10보다 큰 수를 출력할 수도 있습니다.
+
+```java
+//find all the odd numbers which are greater than 10
+Predicate<Integer> gt10Predicate = num -> num > 10;
+for(Integer num : numbers) {
+    if(gt10Predicate.and(oddEvenPredicated).test(num))  {
+        System.out.println("Odd num > 10 " + num);
+    }
+}
+```
+
+Predicate의 인터페이스의 정적 메소드 isEqual를 살펴보면 다음과 같이 작성되어 있다.
+이중 콜론 연산자가 사용되었는데 Objects::isNull은 object -> Objects.isNull(object)라고 생각하며 된다.
+
+공식 문서의 설명에는 다음과 같이 적혀 있습니다.
+
+Objects.equals(Object, Object)에 따라 두 인수가 동일한지 테스트하는 Predicate를 반환합니다.
+매개변수: targetRef – 같음을 비교할 객체 참조(null일 수 있음)
+보고:Objects.equals(Object, Object)에 따라 두 인수가 동일한지 테스트하는 술어
+
+```java
+   static <T> Predicate<T> isEqual(Object targetRef) {
+        return (null == targetRef)
+                ? Objects::isNull
+                : object -> targetRef.equals(object);
+    }
+```
+
+이를 활용해서 다음과 같은 코드를 작성할 수 있습니다.
+
+```java
+public class PredicateExampleIsEqual {
+    public static void main(String[] args) {
+        String name = "John";
+
+        Predicate<String> nameEqualityPredicate = str -> abc.equals("John");
+        
+        System.out.println(nameEqualityPredicate.test(name));
+    }
+}
+```
+
+Predicate 인터페이스의 정적 변수 isEqual()을 사용해서 다음과 같이 표현할 수 있습니다.
+
+```java
+public class PredicateExampleIsEqual {
+    public static void main(String[] args) {
+        String name = "John";
+
+        Predicate<String> nameEqualityPredicate2 = Predicate.isEqual("John");
+        
+        System.out.println(nameEqualityPredicate.test(name));
+    }
+}
+```
+
+```text
+true
+```
 

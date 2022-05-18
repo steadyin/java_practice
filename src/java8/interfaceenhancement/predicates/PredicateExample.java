@@ -2,7 +2,7 @@ package java8.interfaceenhancement.predicates;
 
 import java.util.function.Predicate;
 
-public class PredicateExample {
+public class    PredicateExample {
 
     public static void main(String[] args) {
         Predicate<Integer> isOdd = num -> num%2!=0;
@@ -30,7 +30,5 @@ public class PredicateExample {
         }
 
         //Array of names will some empty string also in the array, remove all empty string
-
-
     }
 }

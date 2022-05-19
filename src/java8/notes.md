@@ -31,10 +31,14 @@ d. Lamda Expression
   1. OOP -> Programming paradigm should adhere to Classes, Objets, Encapsulation, Inheritance, Polymorphirm, Abstraction
   2. Functional Programming - Here implementation of same functionality can be done in clear and consise manner.
      - Code will less, implementation will compact 
-
+ 
 e. Predicates
   1. Are predefined functional interface
   2. Return boolean value 
+
+f. Double Colon Operator -> can be used as an alternative to Lambda Expression
+  1. Method reference - instance and static method
+  2. Constructor Reference
 
  
 

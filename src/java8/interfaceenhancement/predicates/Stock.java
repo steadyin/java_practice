@@ -16,6 +16,7 @@ public class Stock {
         return "Name: " + this.name + ", Price: " + this.stockPrice + ", Quantity: " + this.stockQty;
     }
 
+    @Override
     public boolean equals(Object object) {
         Stock stock = (Stock) object;
 
@@ -26,4 +27,6 @@ public class Stock {
         }
         else return false;
     }
+
+
 }

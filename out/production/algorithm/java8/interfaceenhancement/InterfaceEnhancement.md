@@ -535,3 +535,132 @@ public class PredicateExampleIsEqual {
 true
 ```
 
+Stock 클래스를 생성합니다. toString() 메소드와 equals() 메소드를 호출합니다.
+```java
+public class Stock {
+    String name;
+    Integer stockPrice;
+    Integer stockQty;
+
+    public Stock(String name, Integer stockPrice, Integer stockQtys) {
+        this.name = name;
+        this.stockPrice = stockPrice;
+        this.stockQty = stockQtys;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + this.name + ", Price: " + this.stockPrice + ", Quantity: " + this.stockQty;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        Stock stock = (Stock) object;
+
+        if (name.equals(stock.name) &&
+                stockPrice.equals(stock.stockPrice) &&
+                stockQty.equals(stock.stockQty)) {
+            return true;
+        }
+        else return false;
+    }
+}
+```
+
+Override한 equals를 이용해 다음과 같이 Predicate 인터페이스를 활용할 수 있습니다.
+```java
+public class Trading {
+    static ArrayList<Stock> stocks = new ArrayList<>();
+
+    public static void main(String[] args) {
+        Stock stockToSearch = new Stock("FB", 400, 10);
+        stocks.add(new Stock("Apple", 500, 20));
+        stocks.add(new Stock("FB", 400, 10));
+        stocks.add(new Stock("Google", 560, 22));
+
+        Predicate<Stock> stockEquality = Predicate.isEqual(stockToSearch);
+
+        for(Stock s : stocks) {
+            if(stockEquality.test(s)) {
+                System.out.println("Stock found: " + s.toString());
+
+            }
+        }
+    }
+}
+```
+
+## Double Colon Operator(이중 콜론 연산자)
+
+### 이중 콜론 연산자 - 기본
+
+```java
+@FunctionalInterface
+public interface LambdaOne {
+    public void show();
+}
+```
+
+```java
+public class Employee {
+    public void details() {
+        System.out.println("Showing employee details");
+    }
+}
+```
+
+```java
+    LambdaOne lambdaOne = () ->
+        System.out.println("From lambda one");
+    lambdaOne.show();
+```
+
+```java
+public class OneMain {
+    public static void main(String[] args) {
+        //Employee employee = new Employee();
+//        LambdaOne lambdaOne = () ->
+//                System.out.println("From lambda one");
+//        lambdaOne.show();
+
+        //다음과 같이 람다 함수를 호출할 수 있습니다.
+        //더블 콜론 오퍼레이터는 람다 표현식을 대체할 수 있습니다.
+        //염두해우더야 할 것은 다음과 같은 경우메나 대체할 수 있습니다.
+        //비슷한 구문일 때 대체할 수 있습니다.
+        //LambdaOne의 show는 어떤 파라미터도 취하지 않습니다.
+        //Employee 클래스의 details 또한 아규먼트를 취하고 있지 않습니다.
+        //Lamda Abstract Method 람다는 Employee의 details()메소드를 참조합니다.
+        //Double Colon Operator로 람다 표현식을 대체할 수 있습니다.
+
+
+        //그래서 Employee의 로직을 수행한 것입니다.
+
+//        LambdaOne lambdaOne1 = employee::details;
+//        lambdaOne1.show();
+
+//        LambdaTwo lambdaTwo = employee::details2;
+//        lambdaTwo.show2(55);
+        //이것이 Lambda가 무엇이든간에 확인해야 하는 이유입니다.
+        //메소드의 파라미터, 기존 클래스에 연결된 메소드의 매개변수
+        //메소드는 해당 람다에서 참조할 수 있으므로 기본적으로 더 이상 정의를 제공할필요가 없게됩니다.
+
+        //클래스의 메소드를 참조할 수 있습니다.
+        //람다 메소드를 호출하면 실제로 직원 클래스의 메소드 로직을 수행합니다.
+
+        //Static 메소드를 참더라도 Labmda의 추상 메소드는 Static으로 할 필요는 없습니다.
+
+        LambdaStatic lambdaStatic = Employee :: detailsStatic;
+        lambdaStatic.showStatic(3);
+
+    }
+}
+```
+
+### 이중 콜론 연산자 - Static
+
+### 이중 콜론 연산자 - 생성자
+
+
+f
+
+

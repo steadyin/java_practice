@@ -40,7 +40,8 @@ f. Double Colon Operator -> can be used as an alternative to Lambda Expression
   1. Method reference - instance and static method
   2. Constructor Reference
 
- 
-
+g. Streams - java.util.stream
+  1. Helps to operate on collection object
+  2. 
 
 
